@@ -7,15 +7,18 @@ import { userSchema } from "@/lib/types";
 
 export async function POST(req: NextRequest) {
 
-    const { username, email, password } = await userSchema.parseAsync(req.json())
-
-    await DbConnect()
     try {
+        const body = await req.json()
+        const {username,email,password} = userSchema.parse(body)
+    
+        await DbConnect()
         const alreadyExist = await User.findOne({ email })
 
         if (alreadyExist) {
             return NextResponse.json({
                 message: "User already Exist with this email"
+            },{
+                status:409
             })
         }
 
@@ -28,10 +31,12 @@ export async function POST(req: NextRequest) {
             password: hashPassword
         })
 
-        await newUser.save()
-
         return NextResponse.json({
-            newUser
+            id:newUser._id,
+            username:newUser.username,
+            email:newUser.email
+        },{
+            status:201
         })
 
     } catch (error: any) {

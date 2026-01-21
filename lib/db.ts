@@ -5,10 +5,12 @@ const MONGODB_URI = process.env.MONGODB_URI!
 if (!MONGODB_URI) {
     throw new Error("Please define mongodb_url in your env file")
 }
-
+// @ts-ignore
 let cached = global.mongoose;
 
+
 if (!cached) {
+    // @ts-ignore
     cached = global.mongoose = { conn: null, promise: null }
 }
 
