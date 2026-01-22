@@ -34,8 +34,6 @@ export async function POST(req: NextRequest) {
 
         const newCourse = await Course.create(courseData)
 
-        await newCourse.save()
-
         return NextResponse.json({
             newCourse
         })
