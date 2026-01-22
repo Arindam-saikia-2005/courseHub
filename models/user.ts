@@ -1,6 +1,6 @@
-import { Schema, model, models } from  "mongoose"
+import { Schema, Types, model, models } from  "mongoose"
 
- export type Roles = "USER" | "ADMIN"
+ type Roles = "USER" | "ADMIN"
 
 export interface User {
     username:string;
@@ -8,7 +8,7 @@ export interface User {
     password:string;
     profilePic?:string;
     role: Roles;
-    course:[];
+    course:Types.ObjectId[];
 }
 
 const userSchema = new Schema<User>({
@@ -26,6 +26,7 @@ const userSchema = new Schema<User>({
         required:true
     },
     role : {
+        type:String,
         enum: ["USER","ADMIN"],
         default:"USER"
     },

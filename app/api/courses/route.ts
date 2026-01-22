@@ -34,8 +34,6 @@ export async function POST(req: NextRequest) {
 
         const newCourse = await Course.create(courseData)
 
-        await newCourse.save()
-
         return NextResponse.json({
             newCourse
         })
@@ -54,7 +52,7 @@ export async function POST(req: NextRequest) {
 export async function GET(req:NextRequest) {
     try {
         await DbConnect()
-        const courses = await Course.find()
+        const courses = await Course.find({})
         return NextResponse.json({
             courses
         })
