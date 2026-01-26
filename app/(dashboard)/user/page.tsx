@@ -3,7 +3,7 @@
 function page() {
   return (
     <div>
-        User Admin page
+        User  page
     </div>
   )
 }

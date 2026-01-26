@@ -9,9 +9,14 @@ export default async function RedirectPage() {
 
     if(!session) {
         redirect("/login")
-    }
-    
-  redirect(session.user.role === "ADMIN" ? "/admin" : "/user")
+    } 
+
+  if(session.user.role === "ADMIN") {
+    redirect("/admin")
+  }
+
+  
+
 
   return (
     <div></div>

@@ -5,6 +5,7 @@ import React, { useState } from "react";
 import toast from "react-hot-toast";
 
 export default function Page() {
+
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
@@ -43,7 +44,7 @@ export default function Page() {
   return (
     <div className="flex text-black items-start bg-gray-50 flex-col  min-h-screen w-full gap-3">
       <form onSubmit={handleSubmit}>
-        <div className="w-full ">
+        <div className="w-full">
           <p className="mb-2">Title</p>
           <input
             className="w-full  max-w-125 px-3 py-2 rounded-md border-2 border-gray-300 bg-white"
@@ -93,6 +94,8 @@ export default function Page() {
             }}
           />
         </div>
+
+        <button type="submit" className="bg-black px-3 py-2 text-sm text-white rounded-lg mt-3">Create Now</button>
       </form>
     </div>
   );

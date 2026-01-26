@@ -33,14 +33,14 @@ function page() {
         <div className="flex border-amber-200 border px-4 py-2 items-center justify-center flex-col space-y-3">
           <label className="self-start">Email</label>
           <input
-            className=" bg-gray-800 px-10 h-8  rounded-sm"
+            className=" border border-gray-400 px-10 h-8  rounded-sm"
             type="text"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
           <label className="self-start">Password</label>
           <input
-            className=" bg-gray-800 px-10 h-8  rounded-sm"
+            className=" border border-gray-400 px-10 h-8  rounded-sm"
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}

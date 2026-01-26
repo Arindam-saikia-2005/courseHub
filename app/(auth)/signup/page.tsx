@@ -39,24 +39,24 @@ function page() {
   return (
     <div className="flex items-center justify-center min-h-screen w-full flex-col">
       <form onSubmit={handleOnSubmit}>
-        <div className="flex flex-col border border-b-blue-50 px-4 py-2 items-center justify-center space-y-5">
+        <div className="flex flex-col border rounded-lg px-4 py-2 items-center justify-center space-y-5">
           <label className="self-start">Username</label>
           <input
-            className=" bg-gray-800 px-10 h-8  rounded-sm"
+            className="border border-gray-400  px-10 h-8  rounded-sm"
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
           />
           <label className="self-start">Email</label>
           <input
-            className=" bg-gray-800 px-10 h-8  rounded-sm"
+            className="border border-gray-400 px-10 h-8  rounded-sm"
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
           <label className="self-start">Password</label>
           <input
-            className=" bg-gray-800 px-10 h-8  rounded-sm"
+            className="border border-gray-400  px-10 h-8  rounded-sm"
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
