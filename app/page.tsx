@@ -4,7 +4,7 @@ import HeroSection from "@/components/HeroSection"
 export default function Home() {
 
   return (
-    <div>
+    <div className="min-h-screen w-full">
       <HeroSection/>
     </div>
   );
