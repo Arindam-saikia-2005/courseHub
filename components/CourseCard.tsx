@@ -7,16 +7,18 @@ export default function Page() {
         alt="course-image"
       />
       <p className="font-semibold text-xl mt-2">Web Dev + Devops Bootcamp</p>
-     <div className="mt-6 space-y-5">
-       <p className="text-gray-400">
-        Web dev (Every Friday) Devops (Every Friday) Machine Learning and AI
-        (Every Saturday) Web3....
-      </p>
-      <p className="font-semibold text-2xl">₹5,999</p>
-      <button className="rounded-2xl w-full bg-[#001959] text-white font-sans  py-3">
-        View Details
-      </button>
-     </div>
+      <div className="mt-6 space-y-5">
+        <p className="text-gray-400">
+          Web dev (Every Friday) Devops (Every Friday) Machine Learning and AI
+          (Every Saturday) Web3....
+        </p>
+        <p className="font-semibold text-2xl">₹5,999</p>
+        <div className="flex flex-wrap gap-4 justify-center md:justify-start">
+          <button className="rounded-2xl w-full bg-[#001959] text-white font-sans  py-3">
+            View Details
+          </button>
+        </div>
+      </div>
     </div>
   );
 }

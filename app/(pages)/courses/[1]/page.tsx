@@ -1,5 +1,7 @@
 "use client";
 
+import Footer from "@/components/Footer";
+
 import { useParams } from "next/navigation";
 
 export default function Page() {
@@ -19,7 +21,7 @@ export default function Page() {
           </p>
         </div>
 
-        <div className=" md:w-100 h-auto rouned-2xl">
+        <div className=" md:w-100 h-auto  rouned-2xl">
           <img
             className="  rounded-t-2xl"
             src="/course-image.jpg"
@@ -66,6 +68,53 @@ export default function Page() {
           </div>
         </div>
       </div>
+
+      {/* 3rd div */}
+
+      <h1 className="font-semibold text-5xl text-center text-[#001959]">Who is This For? </h1>
+
+      <div className="w-full h-auto flex flex-col md:flex-row flex-wrap gap-6 items-center p-5 md:p-20">
+        <div className="p-5 w-full md:w-[30%] text-center space-y-3">
+          <img
+            className="h-[200px] w-full max-w-[300px] mx-auto rounded-lg"
+            src="/beginner-image.jpeg"
+            alt="beginner-image"
+          />
+          <p className="mt-2 font-semibold text-2xl text-[#001959]">Beginners in Tech</p>
+          <p className="text-[#001959] line-clamp-2 text-sm">
+            Those who want to start a career in software development with strong
+            fundamentals.
+          </p>
+        </div>
+
+        <div className="p-5 w-full md:w-[30%] text-center space-y-3">
+          <img
+            className="h-[200px] w-full max-w-[300px] mx-auto rounded-lg"
+            src="/developer-image.jpeg"
+            alt="developer-image"
+          />
+          <p className="mt-2 font-semibold text-2xl text-[#001959]">Self-taught Developers</p>
+          <p className="text-[#001959] line-clamp-2 text-sm">
+            People who already know the basics but need a structured roadmap and
+            real projects to become job-ready.
+          </p>
+        </div>
+
+        <div className="p-5 w-full md:w-[30%] text-center">
+          <img
+            className="h-[200px] w-full max-w-[300px] mx-auto rounded-lg"
+            src="/professional-image2.jpeg"
+            alt="professional-image"
+          />
+          <p className="mt-2 font-semibold text-3xl text-[#001959]">Working Professionals</p>
+          <p className="text-[#001959] line-clamp-2 text-sm">
+            Anyone looking to upgrade skills in Full-Stack + DevOps and grow
+            into better roles in tech.
+          </p>
+        </div>
+      </div>
+
+      <Footer />
     </div>
   );
 }
