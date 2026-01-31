@@ -7,7 +7,7 @@ import React, { useState } from "react";
 interface FileUploadProps {
   onSuccess: (res: any) => void;
   onProgress?: (progress: any) => void;
-  fileType?: "video";
+  fileType?: "video" | "image";
 }
 
 export const FileUpload = ({
@@ -20,8 +20,14 @@ export const FileUpload = ({
 
   const validateFile = (file: File) => {
     if (fileType === "video") {
-      if (!file.type.startsWith("/")) {
-        setError("please upload a valid file");
+      if (!file.type.startsWith("video/")) {
+        setError("please upload a valid video file");
+        return false;
+      }
+    }
+    if (fileType === "image") {
+      if (!file.type.startsWith("image/")) {
+        setError("please upload a valid image file");
         return false;
       }
     }
@@ -43,12 +49,14 @@ export const FileUpload = ({
 
     try {
       const AuthRes = await fetch("/api/imagekit-auth");
-      const { authenticationParameters } = await AuthRes.json();
+      const { authenticationParameters, publicKey } = await AuthRes.json();
+
+      console.log("Auth Response:", { authenticationParameters, publicKey });
 
       const uploadResponse = await upload({
         file,
         fileName: file.name,
-        publicKey: process.env.NEXT_PUBLIC_PUBLIC_KEY!,
+        publicKey: publicKey,
         signature: authenticationParameters.signature,
         expire: authenticationParameters.expire,
         token: authenticationParameters.token,
@@ -59,9 +67,15 @@ export const FileUpload = ({
           }
         },
       });
-      onSuccess(uploadResponse);
+      // Debug: Log the actual response structure
+      console.log("ImageKit Response:", uploadResponse);
+      // Transform ImageKit response to match expected format
+      onSuccess({
+        videoUrl: uploadResponse.url,
+        thumbnail: uploadResponse.thumbnailUrl,
+      });
     } catch (err: any) {
-      console.error(err.message);
+      setError(err.message || "Upload failed");
       throw err;
     } finally {
       setUploading(false);
@@ -69,7 +83,7 @@ export const FileUpload = ({
   };
 
   return (
-    <>
+    <div className="md:space-y-4 md:flex md:flex-col">
       <input
         className="bg-white border border-gray-300"
         placeholder="CHOOSE FILE"
@@ -77,7 +91,14 @@ export const FileUpload = ({
         accept={fileType === "video" ? "video/*" : ""}
         onChange={handleFileChange}
       />
+      <input
+        className="bg-white border border-gray-300"
+        placeholder="CHOOSE FILE"
+        type="file"
+        accept={fileType === "image" ? "image/*" : ""}
+        onChange={handleFileChange}
+      />
       {uploading && <span>Loading......</span>}
-    </>
+    </div>
   );
 };

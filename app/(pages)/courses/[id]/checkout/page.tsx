@@ -1,4 +1,43 @@
-export default function Page() {
+"use client"
+
+export default function Page({ courseId } : {courseId : string}) {
+
+   async function buyCourse() {
+    
+     const orderRes = await fetch("/api/payment/create-order",{
+      method:"POST",
+      body:JSON.stringify({courseId})
+     })
+     const order = await orderRes.json()
+
+     const options = {
+      key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID!,
+      amount: order.amount,
+      currency: "INR",
+      name: "Course Platform",
+      description: "Course Purchase",
+      order_id: order.id,
+      handler: async function (response: any) {
+        await fetch("/api/payment/verify", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            ...response,
+            courseId,
+          }),
+        });
+
+        alert("Payment successful!");
+        window.location.reload();
+      },
+    };
+
+    const rzp = new (window as any).Razorpay(options);
+    rzp.open();
+
+   }
+
+
   return (
     <div className="bg-[#f9fafb] min-h-screen w-full p-5 md:p-10">
       <div className="mx-auto max-w-7xl w-full">
@@ -49,7 +88,7 @@ export default function Page() {
               </div>
             </div>
 
-            <button className="bg-[#001959] hover:bg-[#001540] transition px-4 py-3 w-full text-white rounded-2xl font-semibold">
+            <button onClick={buyCourse} className="bg-[#001959] hover:bg-[#001540] transition px-4 py-3 w-full text-white rounded-2xl font-semibold">
               Buy Now
             </button>
           </div>

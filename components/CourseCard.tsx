@@ -1,4 +1,8 @@
 export default function Page() {
+
+ 
+
+
   return (
     <div className="max-w-md h-125 bg-white p-5 rounded-2xl">
       <img

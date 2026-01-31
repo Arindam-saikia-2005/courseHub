@@ -1,55 +1,62 @@
 import { authOptions } from "@/lib/auth";
 import { DbConnect } from "@/lib/db";
-import { Course, ICourse } from "@/models/course";
+import { Course} from "@/models/course";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 
 
 // This route can only access by the admin 
 export async function POST(req: NextRequest) {
+  await DbConnect()
 
-    const session = await getServerSession(authOptions)
+  const session = await getServerSession(authOptions)
 
-    if (!session || session.user.role !== "ADMIN") {
-        return NextResponse.json({
-            error: "UnAuthoeized"
-        }, {
-            status: 401
-        })
+  if (!session || session.user.role !== "ADMIN") {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+  }
+
+  try {
+    const {
+      title,
+      description,
+      videoUrl,
+      price,
+      thumbnail,
+      shortDescription
+    } = await req.json()
+
+    if (!title || !description) {
+      return NextResponse.json(
+        { error: "All fields are required" },
+        { status: 400 }
+      )
     }
 
-    try {
-        await DbConnect()
-        const body: ICourse = await req.json()
+    const newCourse = await Course.create({
+      title,
+      description,
+      videoUrl,
+      price,
+      thumbnail,
+      shortDescription
+    })
 
-        if (!body.title || !body.description) {
-            return NextResponse.json({
-                error: "All fields are required"
-            }, {
-                status: 400
-            })
-        }
+    console.log("CREATED COURSE:", newCourse.toObject())
 
-        const courseData = { ...body }
-
-        const newCourse = await Course.create(courseData)
-
-        return NextResponse.json({
-            newCourse
-        })
-    } catch (error) {
-        console.error("Error while creating the course")
-        return NextResponse.json({
-            error: "Internal server error"
-        }, {
-            status: 500
-        })
-    }
+    return NextResponse.json({ newCourse })
+  } catch (error) {
+    console.error("Error while creating the course", error)
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 }
+    )
+  }
 }
 
 
+
 // this route can access by everyone
-export async function GET(req:NextRequest) {
+export async function GET(req: NextRequest) {
     try {
         await DbConnect()
         const courses = await Course.find({})
@@ -59,9 +66,9 @@ export async function GET(req:NextRequest) {
     } catch (error) {
         console.error("Error while getting all the videos");
         return NextResponse.json({
-            message:"Internal server error"
-        },{
-            status:500
+            message: "Internal server error"
+        }, {
+            status: 500
         })
     }
 }

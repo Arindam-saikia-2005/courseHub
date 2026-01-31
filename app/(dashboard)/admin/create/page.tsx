@@ -8,6 +8,7 @@ export default function Page() {
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [shortDescription, setShortDescription] = useState("");
   const [price, setPrice] = useState("");
   const [form, setForm] = useState({
     videoUrl: "",
@@ -26,6 +27,9 @@ export default function Page() {
           title,
           description,
           price,
+          videoUrl: form.videoUrl,
+          shortDescription,
+          thumbnail:form.thumbnail
         }),
       });
 
@@ -57,11 +61,21 @@ export default function Page() {
         </div>
 
         <div className="w-full">
-          <p className="mb-2">Description</p>
+          <p className="mb-2">Long Description</p>
           <textarea
             className="w-full max-w-125 px-3 py-2 rounded-md border-2 border-gray-300 bg-white"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
+            placeholder="write content here"
+            required
+          />
+        </div>
+        <div className="w-full">
+          <p className="mb-2">Short Description</p>
+          <textarea
+            className="w-full max-w-125 px-3 py-2 rounded-md border-2 border-gray-300 bg-white"
+            value={shortDescription}
+            onChange={(e) => setShortDescription(e.target.value)}
             placeholder="write content here"
             required
           />
@@ -79,7 +93,7 @@ export default function Page() {
         </div>
 
         <div className="w-full space-y-3 mt-3">
-          <p>Upload Video</p>
+          <p>Upload Video and Image</p>
           <FileUpload
             fileType="video"
             onSuccess={(res) => {
