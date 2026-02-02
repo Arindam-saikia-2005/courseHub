@@ -93,18 +93,33 @@ export default function Page() {
         </div>
 
         <div className="w-full space-y-3 mt-3">
-          <p>Upload Video and Image</p>
+          <p>Upload Video</p>
           <FileUpload
             fileType="video"
             onSuccess={(res) => {
               setForm((prev) => ({
                 ...prev,
                 videoUrl: res.videoUrl,
-                thumbnail: res.thumbnail,
+                // if ImageKit provides a thumbnail for video it will be set, otherwise keep empty
+                thumbnail: res.thumbnail || prev.thumbnail,
               }));
             }}
             onProgress={(progress) => {
               console.log(`Upload progress : ${progress}`);
+            }}
+          />
+
+          <p>Upload Thumbnail Image</p>
+          <FileUpload
+            fileType="image"
+            onSuccess={(res) => {
+              setForm((prev) => ({
+                ...prev,
+                thumbnail: res.thumbnail,
+              }));
+            }}
+            onProgress={(progress) => {
+              console.log(`Image upload progress : ${progress}`);
             }}
           />
         </div>

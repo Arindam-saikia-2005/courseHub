@@ -29,8 +29,13 @@ export default function Page() {
           className="flex items-center gap-3 border border-gray-300 border-r-0 px-3 py-2 rounded-lg"
           href="/admin/promote"
         >
-          <p></p>
           <p className="hidden md:block">Promote User</p>
+        </Link>
+        <Link
+          className="flex items-center gap-3 border border-gray-300 border-r-0 px-3 py-2 rounded-lg"
+          href="/admin/delete"
+        >
+          <p className="hidden md:block">Delete User</p>
         </Link>
       </div>
     </div>

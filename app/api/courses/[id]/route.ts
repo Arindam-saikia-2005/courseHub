@@ -35,6 +35,8 @@ export async function GET(req: NextRequest, context: { params: Promise<{ id: str
 // DeleteCourseByID : this route is only access by the admin 
 export async function DELETE(req: NextRequest, context: { params: Promise<{ id: string }> }) {
 
+    await DbConnect()
+     
     const session = await getServerSession(authOptions)
 
     if (!session || session.user.role !== "ADMIN") {
@@ -46,7 +48,7 @@ export async function DELETE(req: NextRequest, context: { params: Promise<{ id: 
     }
 
     try {
-        await DbConnect()
+        
         const {id:courseId }= await context.params
 
         const course = await Course.findByIdAndDelete(courseId)

@@ -70,10 +70,21 @@ export const FileUpload = ({
       // Debug: Log the actual response structure
       console.log("ImageKit Response:", uploadResponse);
       // Transform ImageKit response to match expected format
-      onSuccess({
-        videoUrl: uploadResponse.url,
-        thumbnail: uploadResponse.thumbnailUrl,
-      });
+      if (fileType === "image") {
+        onSuccess({
+          thumbnail: uploadResponse.url,
+        });
+      } else if (fileType === "video") {
+        onSuccess({
+          videoUrl: uploadResponse.url,
+          thumbnail: uploadResponse.thumbnailUrl || "",
+        });
+      } else {
+        onSuccess({
+          url: uploadResponse.url,
+          thumbnail: uploadResponse.thumbnailUrl || uploadResponse.url,
+        });
+      }
     } catch (err: any) {
       setError(err.message || "Upload failed");
       throw err;
@@ -86,16 +97,10 @@ export const FileUpload = ({
     <div className="md:space-y-4 md:flex md:flex-col">
       <input
         className="bg-white border border-gray-300"
+        aria-label={fileType === "video" ? "Upload video file" : "Upload image file"}
         placeholder="CHOOSE FILE"
         type="file"
-        accept={fileType === "video" ? "video/*" : ""}
-        onChange={handleFileChange}
-      />
-      <input
-        className="bg-white border border-gray-300"
-        placeholder="CHOOSE FILE"
-        type="file"
-        accept={fileType === "image" ? "image/*" : ""}
+        accept={fileType === "video" ? "video/*" : fileType === "image" ? "image/*" : undefined}
         onChange={handleFileChange}
       />
       {uploading && <span>Loading......</span>}
