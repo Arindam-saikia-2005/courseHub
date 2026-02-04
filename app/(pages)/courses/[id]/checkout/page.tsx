@@ -1,41 +1,91 @@
 "use client"
 
-export default function Page({ courseId } : {courseId : string}) {
+import axios from "axios";
+import { useParams } from "next/navigation";
+import { useEffect, useState } from "react";
+
+interface CourseType {
+    title: string;
+    shortDescription:string;
+    description: string;
+    videoUrl?: string;
+    thumbnail?:string;
+    slug?: string;
+    price: number;
+    _id:string
+}
+
+export default function Page() {
+
+
+  const { id: courseId } = useParams() 
+
+
+  const [course,setCourse] = useState<CourseType | null>(null)
 
    async function buyCourse() {
-    
-     const orderRes = await fetch("/api/payment/create-order",{
-      method:"POST",
-      body:JSON.stringify({courseId})
-     })
-     const order = await orderRes.json()
+    try {
+      const orderRes = await fetch("/api/payment/create-order",{
+        method:"POST",
+        body:JSON.stringify({courseId})
+      })
+      
+      if (!orderRes.ok) {
+        const error = await orderRes.json()
+        alert(`Error: ${error.error || 'Failed to create order'}`)
+        return
+      }
+      
+      const order = await orderRes.json()
 
-     const options = {
-      key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID!,
-      amount: order.amount,
-      currency: "INR",
-      name: "Course Platform",
-      description: "Course Purchase",
-      order_id: order.id,
-      handler: async function (response: any) {
-        await fetch("/api/payment/verify", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            ...response,
-            courseId,
-          }),
-        });
+      if (!order.id || !order.amount) {
+        alert('Invalid order response from server')
+        return
+      }
 
-        alert("Payment successful!");
-        window.location.reload();
-      },
-    };
+      const options = {
+        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID!,
+        amount: order.amount,
+        currency: "INR",
+        name: "Course Platform",
+        description: "Course Purchase",
+        order_id: order.id,
+        handler: async function (response: any) {
+          await fetch("/api/payment/verify", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              ...response,
+              courseId,
+            }),
+          });
 
-    const rzp = new (window as any).Razorpay(options);
-    rzp.open();
+          alert("Payment successful!");
+          window.location.reload();
+        },
+      };
 
+      const rzp = new (window as any).Razorpay(options);
+      rzp.open();
+    } catch (err) {
+      console.error("Error in buyCourse:", err)
+      alert("An error occurred while processing your payment")
+    }
    }
+
+   async function fetchCourseById () {
+    try {
+      const res =  await axios.get(`/api/courses/${courseId}`)
+      setCourse(res.data.course)
+    } catch(err) {
+     console.log("err",err)
+    }
+      
+   }
+
+   useEffect(() => {
+    if(courseId) fetchCourseById()
+   }, [courseId])
 
 
   return (
@@ -52,7 +102,7 @@ export default function Page({ courseId } : {courseId : string}) {
             />
 
             <h3 className="text-2xl font-bold tracking-tight text-[#001959]">
-              100xSchool Combined Bootcamp
+              {course?.shortDescription}
             </h3>
 
             <p className="text-gray-600">Web dev (Every Friday)</p>
@@ -74,7 +124,7 @@ export default function Page({ courseId } : {courseId : string}) {
 
               <div className="flex justify-between">
                 <p className="text-gray-600">Price (Including GST)</p>
-                <p className="text-[#001959] font-medium">₹5,999</p>
+                <p className="text-[#001959] font-medium">{course?.price}</p>
               </div>
 
               <div className="flex justify-between">
@@ -84,7 +134,7 @@ export default function Page({ courseId } : {courseId : string}) {
 
               <div className="flex justify-between items-center">
                 <p className="text-[#001959] font-semibold">Total</p>
-                <p className="text-[#001959] text-2xl font-bold">₹5,999</p>
+                <p className="text-[#001959] text-2xl font-bold">{course?.price}</p>
               </div>
             </div>
 

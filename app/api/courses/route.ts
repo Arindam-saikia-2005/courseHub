@@ -38,7 +38,8 @@ export async function POST(req: NextRequest) {
       videoUrl,
       price,
       thumbnail,
-      shortDescription
+      shortDescription,
+      createdAtBy: session.user.id
     })
 
     console.log("CREATED COURSE:", newCourse.toObject())
