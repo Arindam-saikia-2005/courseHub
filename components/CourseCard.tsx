@@ -31,7 +31,7 @@ export default function Page({
       <p className="font-semibold text-xl mt-2">{title}</p>
       <div className="mt-6 space-y-5">
         <p className="text-gray-400">{shortDescription}</p>
-        <p className="font-semibold text-2xl">{price}</p>
+        <p className="font-semibold text-2xl"> ₹ {price}</p>
         <Link href={`/courses/${_id}`}>
           <div className="flex flex-wrap gap-4 justify-center md:justify-start">
             <button className="rounded-2xl w-full bg-[#001959] text-white font-sans  py-3">

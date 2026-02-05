@@ -35,13 +35,12 @@ export default function Page() {
 
   return (
     <div className="p-5 md:p-7 bg-gray-100">
-      <iframe
-        className="mx-auto"
-        height={300}
-        width={500}
-        src={courses?.videoUrl}
-        allowFullScreen
-      />
+      <iframe 
+      height={400}
+      width={700}
+      className="mx-auto"
+      src={courses?.videoUrl}
+       allowFullScreen />
     </div>
   );
 }
