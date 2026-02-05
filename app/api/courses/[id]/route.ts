@@ -8,7 +8,7 @@ import { NextRequest, NextResponse } from "next/server";
 export async function GET(req: NextRequest, context: { params: Promise<{ id: string }> }) {
     try {
         await DbConnect();
-        const courseId = await context.params
+        const {id : courseId} = await context.params
         const course = await Course.findById(courseId)
 
         if (!course) {
@@ -35,6 +35,8 @@ export async function GET(req: NextRequest, context: { params: Promise<{ id: str
 // DeleteCourseByID : this route is only access by the admin 
 export async function DELETE(req: NextRequest, context: { params: Promise<{ id: string }> }) {
 
+    await DbConnect()
+     
     const session = await getServerSession(authOptions)
 
     if (!session || session.user.role !== "ADMIN") {
@@ -46,8 +48,8 @@ export async function DELETE(req: NextRequest, context: { params: Promise<{ id: 
     }
 
     try {
-        await DbConnect()
-        const courseId = await context.params
+        
+        const {id:courseId }= await context.params
 
         const course = await Course.findByIdAndDelete(courseId)
 
@@ -83,7 +85,7 @@ export async function PUT(req: NextRequest, context: { params: Promise<{ id: str
 
     try {
         await DbConnect();
-        const courseId = await context.params
+        const {id:courseId} = await context.params
         if (!courseId) throw new Error("CourseId not found!")
         const { title, description, price } = await req.json()
         const updateCourse = await Course.findByIdAndUpdate(courseId, {

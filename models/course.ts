@@ -2,8 +2,10 @@ import { Schema, model, models } from "mongoose";
 
 export interface ICourse {
     title: string;
+    shortDescription:string;
     description: string;
     videoUrl?: string;
+    thumbnail?:string;
     slug?: string;
     price: number;
     createdAtBy?: Schema.Types.ObjectId;
@@ -14,12 +16,19 @@ const courseSchema = new Schema<ICourse>({
         type: String,
         required: true
     },
+    shortDescription:{
+      type:String,
+      required:true
+    },
     description: {
         type: String,
         required: true
     },
     videoUrl: {
         type: String
+    },
+    thumbnail:{
+        type:String
     },
     slug: {
         type: String
@@ -32,7 +41,6 @@ const courseSchema = new Schema<ICourse>({
     createdAtBy: {
         type: Schema.Types.ObjectId,
         ref: "User",
-        required: true
     }
 })
 
